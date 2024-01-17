@@ -9,7 +9,6 @@ It allows to extract the first components of delay profiles around peaks of glob
 Before using it, replace the paths to the folders at the top of BWToolboxGUI.m
 
 BWT uses fieldtrip and inpaintnan.
-
 You will also need the FT_Filter_mulch2.m function shared by Gu et al. 2021.
 
 
