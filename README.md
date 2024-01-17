@@ -15,6 +15,7 @@ You will also need the FT_Filter_mulch2.m function shared by Gu et al. 2021.
 
 The input folder should contain the data of all subjects, sessions and tasks, named after BIDS convention (.dtseries.nii files; you can replace the suffix in the .m files).
 
+Run by calling the BWToolboxGUI function in the MATLAB command window.
 
 The "Run SVD" button extracts the main components and saves the first five.
 
