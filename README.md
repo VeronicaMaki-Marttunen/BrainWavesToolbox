@@ -3,7 +3,7 @@
 The **Brain Waves Toolbox** for fMRI data is based on the approach by Gu et al. 2021 (Cerebral Cortex) and accompanying code.
 
 
-It allows to extract the first components of delay profiles around peaks of global signal, and use them to investigate the propagations of "waves" of activity in the brain.
+It allows to extract the first components of delay profiles around peaks of fMRI global signal, and use them to investigate the propagations of "waves" of activity in the brain.
 
 
 Before using it, replace the paths to the folders at the top of BWToolboxGUI.m
