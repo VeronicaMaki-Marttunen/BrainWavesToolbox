@@ -12,7 +12,7 @@ for subject = 1:Nsub
     disp(subject)
     for sess=1:nsess
         for task1 = 1:ntasks
-            inputfile = ['sub-0',num2str(Subjects(subject)),'_ses-0',num2str(sess),'_task-',tasks{task1},'_run-1_space-fsLR_den-91k_bold.dtseries.nii'];
+            inputfile = ['sub-',num2str(Subjects(subject)),'_ses-',num2str(sess),'_task-',tasks{task1},'_run-1_space-fsLR_den-91k_bold.dtseries.nii'];
             oi=ls (inputfile);
             if length(oi)>1
                 disp('Work in progress...')
@@ -90,3 +90,4 @@ end
 disp('Work successfully completed.')
 
 end
+
