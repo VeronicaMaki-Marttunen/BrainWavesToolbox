@@ -1,4 +1,4 @@
-function BWT_runBW(folderpath,PDpath,outputpath,nSess,subjects,tasks,num_bins,imout) %(inputfile,subj,task,ses,num_bins)
+function BWT_runBW(folderpath,PDpath,outputpath,nSess,subjects,tasks,num_bins,imout,tr_data) %(inputfile,subj,task,ses,num_bins)
 % %% calculate time-position graph, time-position correlation, and speed of propagation along a specific brain map
 % clear all;
 % clc;
@@ -17,15 +17,14 @@ for subject = 1:Nsub
             inputfile = ['sub-0',num2str(Subjects(subject)),'_ses-0',num2str(sess),'_task-',tasks{task1},'_run-1_space-fsLR_den-91k_bold.dtseries.nii'];
             oi=ls (inputfile);
             if length(oi)>1
-                disp('Work in progress...')
+                disp('Running...')
                 %% load data
                 %system('wb_command -cifti-smoothing input_data.dtseries.nii 2 2 COLUMN input_data_smoothed.dtseries.nii -left-surface /path/to/surf_structure/S900.L.inflated_MSMAll.32k_fs_LR.surf.gii -right-surface /path/to/surf_structure/S900.R.inflated_MSMAll.32k_fs_LR.surf.gii'); % spatially smoothing input data
                 cii_3 = ft_read_cifti(inputfile);
                 dtser = cii_3.dtseries(1:32492*2,:);
                 nandtser = isnan(dtser(:,1));
                 dtser(nandtser,:) = [];
-                %epi1msk = FT_Filter_mulch2(dtser',[0.001 .1]/.694444)'; % temporally smoothing data
-                epi1msk = FT_Filter_mulch2(dtser',[0.001 .1])'; % temporally smoothing data
+                epi1msk = FT_Filter_mulch3(dtser',[0.001 .05],'bandpass',1/tr_data)'; % temporally smoothing data
                 epi1msk = zscore(epi1msk')';
                 gs_LR1 = mean(epi1msk); % calculate the global mean of input data
 
@@ -123,7 +122,6 @@ for subject = 1:Nsub
                     %coefficients = polyfit(idx_tem_prin(~idx),temp(~idx), 1);%
                     coefs(l1)=coefficients(1);
                     geodesic_distance = 80; % geodesic distance on the cortical surface between sensorimotor and DMN is 80 mm based on Margulies, PNAS, 2016
-                    tr_data = 2.2; % TR
                     %sped_seg = abs(coefficients(1))*geodesic_distance/num_bins/tr_data;
                     sped_seg(l1) = abs(coefficients(1))*geodesic_distance/num_bins/tr_data;
                 end
@@ -156,6 +154,7 @@ for subject = 1:Nsub
     end
     
 end
+
 
 
 disp('Work successfully completed.')
