@@ -3,13 +3,12 @@
 The **Brain Waves Toolbox** for fMRI data is based on the approach by Gu et al. 2021 (Cerebral Cortex) and accompanying code.
 
 
-It allows to extract the first components of delay profiles around peaks of fMRI global signal, and use them to investigate the propagations of "waves" of activity in the brain.
+It allows to extract the first components of delay profiles around peaks of fMRI global signal, and use them to investigate the propagations of waves of activity in the brain.
 
 
 Before using it, replace the paths to the folders at the top of BWToolboxGUI.m
 
 BWT uses fieldtrip and inpaintnan.
-You will also need the FT_Filter_mulch2.m function shared by Gu et al. 2021.
 
 
 The input folder should contain the data of all subjects, sessions and tasks, named after BIDS convention (.dtseries.nii files; you can replace the suffix in the .m files).
