@@ -1,8 +1,8 @@
 function createToolboxGUI()
 
-addpath('\pathto\inpaint_nans')
-addpath('\pathto\BWtoolbox')
-addpath('\pathto\fieldtrip')
+% addpath('\pathto\inpaint_nans')
+% addpath('\pathto\BWtoolbox')
+% addpath('\pathto\fieldtrip')
 
 ft_defaults;
 
@@ -28,44 +28,9 @@ uicontrol('Style', 'pushbutton', 'String', 'Load Output Folder...', ...
     'Position', [150, 320, 100, 30], 'Callback', @loadOutputCallback);
 
 
-
-%     % Dropdown menus
-%     uicontrol('Style', 'popupmenu', 'String', {'Option1', 'Option2', 'Option3'}, ...
-%         'Position', [140, 350, 100, 30]);
-%     uicontrol('Style', 'popupmenu', 'String', {'OptionA', 'OptionB', 'OptionC'}, ...
-%         'Position', [260, 350, 100, 30]);
-%
-%     % Numeric input fields
-%     uicontrol('Style', 'edit', 'Position', [380, 350, 100, 30]);
-%     uicontrol('Style', 'edit', 'Position', [380, 310, 100, 30]);
-
-%     % Option buttons
-%     uicontrol('Style', 'pushbutton', 'String', 'Option 1', ...
-%         'Position', [20, 310, 100, 30], 'Callback', @option1Callback);
-%     uicontrol('Style', 'pushbutton', 'String', 'Option 2', ...
-%         'Position', [20, 270, 100, 30], 'Callback', @option2Callback);
-
-% %     Add a text label
-% uicontrol('Style', 'text', 'String', 'Principal Gradient', ...
-%     'Position', [20, 280, 150, 20], 'FontSize', 10,  'HorizontalAlignment', 'left');%'FontAngle', 'italic',
-
-% Editable Text Box
-%uicontrol('Style', 'edit', 'Position', [20, 240, 150, 20], 'Tag', 'textInput');
-
-% % Button to Process Text
-% uicontrol('Style', 'pushbutton', 'String', 'Process Text', ...
-%     'Position', [180, 240, 100, 30], 'Callback', @processTextCallback);
-%
-% % Editable Text Box for Number Input
-% uicontrol('Style', 'edit', 'Position', [20, 210, 150, 20], 'Tag', 'numberInput');
-%
-% % Button to Process Number Input
-% uicontrol('Style', 'pushbutton', 'String', 'Process Numbers', ...
-%     'Position', [180, 210, 100, 30], 'Callback', @processNumberInputCallback);
-
 % Add label and text box for "Number of Sessions"
 uicontrol('Style', 'text', 'String', 'Number of Sessions:', ...
-    'Position', [20, 260, 120, 20], 'HorizontalAlignment', 'right');
+    'Position', [0, 260, 140, 20], 'HorizontalAlignment', 'right');
 uicontrol('Style', 'edit', 'Position', [150, 260, 100, 20], 'Tag', 'numSessionsInput', 'Callback', @myCallbackFunction);
 
 
@@ -79,17 +44,11 @@ uicontrol('Style', 'text', 'String', 'Subjects number:', ...
     'Position', [20, 200, 120, 20], 'HorizontalAlignment', 'right');
 uicontrol('Style', 'edit', 'Position', [150, 200, 100, 20], 'Tag', 'subjsInput', 'Callback', @myCallbackFunction);
 
+% Add label and text box for "TR"
+uicontrol('Style', 'text', 'String', 'TR (s):', ...
+    'Position', [95, 170, 50, 20], 'HorizontalAlignment', 'right');
+uicontrol('Style', 'edit', 'Position', [152, 170, 20, 20], 'Tag', 'TRInput', 'Callback', @myCallbackFunction);
 
-% % Use folder path
-%
-% handles = guidata(fig); % 'fig' is the handle to your figure
-% if isfield(handles, 'folder_path')
-%     folder_path = handles.folder_path;
-%     % Now you can use folder_path as needed
-%     disp(folder_path)
-% else
-%     disp('Folder path not yet set.');
-% end
 
 uicontrol('Style', 'pushbutton', 'String', 'Run SVD', ...
     'Position', [300, 210, 80, 80], 'Callback', @callOtherFileFunction);
@@ -163,7 +122,6 @@ uicontrol('Style', 'pushbutton', 'String', 'Run Brain Waves', ...
 
         [filename, pathname] = uigetfile({'*.nii','Image Files (*.nii)'}, 'Select an Image');
 
-
         % Full path of the file
         fullPath = fullfile(pathname, filename);
 
@@ -198,28 +156,28 @@ uicontrol('Style', 'pushbutton', 'String', 'Run Brain Waves', ...
                 handles.tasks = cellArray;
             case 'subjsInput'
                 % Retrieve the Vector input
-    % Retrieve the input string from the text box
-    subjsInputHandle = findobj('Tag', 'subjsInput');
-    inputStr = get(subjsInputHandle, 'String');
+                % Retrieve the input string from the text box
+                subjsInputHandle = findobj('Tag', 'subjsInput');
+                inputStr = get(subjsInputHandle, 'String');
 
-    % Parse and convert the input string
-    if contains(inputStr, ':') || contains(inputStr, ',')
-        % Handle colon notation and comma-separated list
-        try
-            subjects = eval(['[', inputStr, ']']);  % Convert to vector
-        catch
-            disp('Invalid input format');
-            return;
-        end
-    else
-        % Handle single number
-        subjects = str2double(inputStr);
-        if isnan(subjects)
-            disp('Invalid input format');
-            return;
-        end
-    end
-    handles.subjects = subjects;
+                % Parse and convert the input string
+                if contains(inputStr, ':') || contains(inputStr, ',')
+                    % Handle colon notation and comma-separated list
+                    try
+                        subjects = eval(['[', inputStr, ']']);  % Convert to vector
+                    catch
+                        disp('Invalid input format');
+                        return;
+                    end
+                else
+                    % Handle single number
+                    subjects = str2double(inputStr);
+                    if isnan(subjects)
+                        disp('Invalid input format');
+                        return;
+                    end
+                end
+                handles.subjects = subjects;
             case 'binsInput'
                 vectorInputHandle = findobj('Tag', 'binsInput');
                 vectorInputText = get(vectorInputHandle, 'String');
@@ -232,31 +190,38 @@ uicontrol('Style', 'pushbutton', 'String', 'Run Brain Waves', ...
                 %     % Store the number vector in handles structure for later use
                 handles.bins = numberVector;
                 %
+            case 'TRInput'
+            TRInputHandle = findobj('Tag', 'TRInput');
+            TRval = str2double(get(TRInputHandle, 'String'));
+            if isnan(TRval) || TRval <= 0
+                disp('Invalid TR value. Please enter a positive number.');
+                return;
+            end
+            handles.TR = TRval;
         end
         % Save the updated handles structure
         guidata(src, handles);
     end
 
-function dropdownCallback(src, ~)
-    handles = guidata(src);  % Retrieve the handles structure
-    selectedValue = get(src, 'Value');  % Get the selected value (index)
-    selectedString = get(src, 'String');  % Get the list of options
-    selectedOption = selectedString{selectedValue};  % Get the selected option string
+    function dropdownCallback(src, ~)
+        handles = guidata(src);  % Retrieve the handles structure
+        selectedValue = get(src, 'Value');  % Get the selected value (index)
+        selectedString = get(src, 'String');  % Get the list of options
+        selectedOption = selectedString{selectedValue};  % Get the selected option string
 
-    % Store the selected option in handles structure
-    handles.dropdownSelection = selectedOption;
+        % Store the selected option in handles structure
+        handles.dropdownSelection = selectedOption;
 
-    % Save the updated handles structure
-    guidata(src, handles);
-end
+        % Save the updated handles structure
+        guidata(src, handles);
+    end
 
 
     function callOtherFileFunction(src, ~)
         % Retrieve the shared data
         handles = guidata(src);
 
-        % Use the numberVector
-        handles
+
         if isfield(handles, 'folder_path')  && isfield(handles, 'numSessions') && isfield(handles, 'output_path') && isfield(handles, 'subjects')  && isfield(handles, 'tasks')
             folderpath = handles.folder_path;
             outputpath = handles.output_path;
@@ -275,9 +240,8 @@ end
         % Retrieve the shared data
         handles = guidata(src);
 
-        % Use the numberVector
-        handles
-        if isfield(handles, 'folder_path')  && isfield(handles, 'numSessions') && isfield(handles, 'output_path') && isfield(handles, 'subjects')  && isfield(handles, 'tasks') && isfield(handles, 'bins')
+        % handles
+        if isfield(handles, 'folder_path')  && isfield(handles, 'numSessions') && isfield(handles, 'output_path') && isfield(handles, 'subjects')  && isfield(handles, 'tasks') && isfield(handles, 'bins')  &&     isfield(handles, 'TR') 
             folderpath = handles.folder_path;
             outputpath = handles.output_path;
             nSess = handles.numSessions;
@@ -286,9 +250,10 @@ end
             nbins = handles.bins;
             PDpath = handles.PDpath;
             imout= handles.dropdownSelection; %wants images?
+            TR = handles.TR;
 
             % Call the function from otherfile.m
-            BWT_runBW(folderpath,PDpath,outputpath,nSess,subjects,tasks,nbins,imout); % Assuming the function name is 'otherfile' and takes one argument
+            BWT_runBW(folderpath,PDpath,outputpath,nSess,subjects,tasks,nbins,imout,TR); 
         else
             disp('Please enter all input values.');
         end
