@@ -1,5 +1,5 @@
 function BWT_runSVD(folderpath,outputpath,nSess,subjects,tasks)
-addpath('\\VUW\Personal$\Homes\E\expositove\My Documents\MyFolder\MATLAB_functions\inpaint_nans')
+
 Subjects=subjects;
 
 Nsub=length(Subjects);
@@ -88,4 +88,5 @@ ft_write_cifti(['EV',num2str(eg),'.nii'],cifti,'parameter','dtseries');
 end
 
 disp('Work successfully completed.')
+
 end
