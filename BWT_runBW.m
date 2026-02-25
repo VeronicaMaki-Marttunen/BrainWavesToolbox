@@ -1,4 +1,4 @@
-function BWT_runBW(folderpath,PDpath,outputpath,nSess,subjects,tasks,num_bins,imout,tr_data) %(inputfile,subj,task,ses,num_bins)
+function BWT_runBW(folderpath,PDpath,outputpath,nSess,subjects,tasks,num_bins,imout,tr_data) 
 % %% calculate time-position graph, time-position correlation, and speed of propagation along a specific brain map
 % clear all;
 % clc;
@@ -14,7 +14,7 @@ for subject = 1:Nsub
     disp(subject)
     for sess=1:nsess
         for task1 = 1:ntasks
-            inputfile = ['sub-0',num2str(Subjects(subject)),'_ses-0',num2str(sess),'_task-',tasks{task1},'_run-1_space-fsLR_den-91k_bold.dtseries.nii'];
+            inputfile = ['sub-',num2str(Subjects(subject)),'_ses-',num2str(sess),'_task-',tasks{task1},'_run-1_space-fsLR_den-91k_bold.dtseries.nii'];
             oi=ls (inputfile);
             if length(oi)>1
                 disp('Running...')
@@ -158,3 +158,4 @@ end
 
 
 disp('Work successfully completed.')
+
